@@ -3,7 +3,7 @@ elixir-elliptic-curve
 
 An elixir module for elliptic curve cryptography (MIT licence). You can use it to sign messages and to verify signatures with a public key.
 
-# Use
+## Use
 
 Use an existing elliptic curve public key pair or generate one using openssl (adapt the curve name according to your needs):
 
