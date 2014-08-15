@@ -3,7 +3,7 @@ elixir-elliptic-curve
 
 An elixir module for elliptic curve cryptography (MIT licence). You can use it to sign messages and to verify signatures with a public key.
 
-## Use
+## Generate public key pair
 
 Use an existing elliptic curve public key pair or generate one using openssl (adapt the curve name according to your needs):
 
@@ -12,7 +12,13 @@ openssl ecparam -out ec_private_key.pem -name secp521r1 -genkey
 openssl ec -in ec_private_key.pem -pubout -out ec_public_key.pem
 ```
 
-Copy the ECC-Module-File into your project. It's a GenServer-Module, you can start a new process passing in both the private and the public key combined in one (still) pem-style string:
+## Install
+
+Copy the ECC-Module-File into your project.
+
+## Use
+
+ECC is a GenServer-Module. You can start a new process passing in both the private and the public key combined in one (still pem-style) string:
 
 ```elixir
 pem_public = File.read! "ec_public_key.pem"
