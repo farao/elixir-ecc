@@ -1,4 +1,4 @@
-defmodule ElixirEllipticCurveTest do
+defmodule ECC.ServerTest do
   use ExUnit.Case
 
   test "signing/checking signatures" do
@@ -14,6 +14,6 @@ defmodule ElixirEllipticCurveTest do
     assert result
 
     {:ok, result} = GenServer.call pid, {:verify_signature, "World", signature, public_key, :sha512}
-    assert !result
+    assert not result
   end
 end

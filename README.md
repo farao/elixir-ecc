@@ -16,7 +16,7 @@ openssl ec -in ec_private_key.pem -pubout -out ec_public_key.pem
 
 Copy the ECC-Module-File into your project.
 
-## Use
+## Use as GenServer-Module
 
 ECC is a GenServer-Module. You can start a new process passing in both the private and the public key combined in one (still pem-style) string:
 
@@ -33,5 +33,25 @@ pem = Enum.join [pem_public, pem_private]
 IO.puts "Hello == Hello? #{result}" # true
 
 {:ok, result} = GenServer.call pid, {:verify_signature, "World", signature, public_key, :sha512}
+IO.puts "Hello == World? #{result}" # false
+```
+
+## Use directly
+
+You can also use ECC.Crypto as a library. The pem-string passed to ECC.Crypto.parse_public_key
+
+```elixir
+pem_public = File.read! "ec_public_key.pem"
+pem_private = File.read! "ec_private_key.pem"
+pem = Enum.join [pem_public, pem_private]
+
+public_key = ECC.Crypto.parse_public_key pem
+private_key = ECC.Crypto.parse_private_key pem
+
+signature = ECC.Crypto.sign("Hello", :sha512, private_key)
+result = ECC.Crypto.verify_signature("Hello", signature, :sha512, public_key)
+IO.puts "Hello == Hello? #{result}" # true
+
+result = not ECC.Crypto.verify_signature("World", signature, :sha512, public_key)
 IO.puts "Hello == World? #{result}" # false
 ```
