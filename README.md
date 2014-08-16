@@ -1,9 +1,9 @@
-elixir-elliptic-curve
+Elliptic Curve Cryptography (ECC) for Elixir
 =====================
 
-An elixir module for elliptic curve cryptography (MIT licence). You can use it to sign messages and to verify signatures with a public key.
+An elixir library for elliptic curve cryptography (MIT License). You can use it to sign messages and to verify signatures with a public key.
 
-## Generate public key pair
+### Generate public key pair
 
 Use an existing elliptic curve public key pair or generate one using openssl (adapt the curve name according to your needs):
 
@@ -12,11 +12,15 @@ openssl ecparam -out ec_private_key.pem -name secp521r1 -genkey
 openssl ec -in ec_private_key.pem -pubout -out ec_public_key.pem
 ```
 
-## Install
+### Requirements
 
-Copy the ECC-Module-File into your project.
+Elixir v15.0.0
 
-## Use as GenServer-Module
+### Install
+
+Simply add ```{:ecc, "~>0.1.0"}``` to the dependencies in your projects ```mix.exs``` file and run ```mix deps.get ecc```
+
+### Use as GenServer-Module
 
 ECC is a GenServer-Module. You can start a new process passing in both the private and the public key combined in one (still pem-style) string:
 
@@ -36,9 +40,9 @@ IO.puts "Hello == Hello? #{result}" # true
 IO.puts "Hello == World? #{result}" # false
 ```
 
-## Use directly
+### Use as a library
 
-You can also use ECC.Crypto as a library. The pem-string passed to ECC.Crypto.parse_public_key
+You can also use ECC.Crypto as a library. The pem-string passed to ECC.Crypto.parse_public_key needs to additionally include an EC PARAMETERS section. In the example, we therefore join both pems to one string:
 
 ```elixir
 pem_public = File.read! "ec_public_key.pem"
