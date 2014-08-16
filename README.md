@@ -1,4 +1,4 @@
-Elliptic Curve Cryptography (ECC) for Elixir
+Elliptic Curve Cryptography (ECC) for Elixir [![[travis]](https://travis-ci.org/farao/elixir-ecc.png)](https://travis-ci.org/farao/elixir-ecc)
 =====================
 
 An elixir library for elliptic curve cryptography (MIT License). You can use it to sign messages and to verify signatures with a public key.
@@ -11,11 +11,6 @@ Use an existing elliptic curve public key pair or generate one using openssl (ad
 openssl ecparam -out ec_private_key.pem -name secp521r1 -genkey
 openssl ec -in ec_private_key.pem -pubout -out ec_public_key.pem
 ```
-
-### Requirements
-
-Elixir v15.0.0
-
 ### Install
 
 Simply add ```{:ecc, "~>0.1.0"}``` to the dependencies in your projects ```mix.exs``` file and run ```mix deps.get ecc```
