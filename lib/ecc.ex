@@ -1,8 +1,20 @@
 defmodule ECC do
   use GenServer
 
-  def start_link(pem) do
-    GenServer.start_link(__MODULE__, pem)
+  def start(pem, register_name\\nil) do
+    if register_name do
+      GenServer.start(__MODULE__, pem, name: register_name)
+    else
+      GenServer.start(__MODULE__, pem)
+    end
+  end
+
+  def start_link(pem, register_name\\nil) do
+    if register_name do
+      GenServer.start_link(__MODULE__, pem, name: register_name)
+    else
+      GenServer.start_link(__MODULE__, pem)
+    end
   end
 
   def init(pem) do

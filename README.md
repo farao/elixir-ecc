@@ -24,14 +24,14 @@ pem_public = File.read! "ec_public_key.pem"
 pem_private = File.read! "ec_private_key.pem"
 pem = Enum.join [pem_public, pem_private]
 
-{:ok, pid} = GenServer.start_link ECC, pem
-{:ok, signature} = GenServer.call pid, {:sign, "Hello", :sha512}
+{:ok, _} = ECC.start_link pem, :ecc
+{:ok, signature} = GenServer.call :ecc, {:sign, "Hello", :sha512}
 
-{:ok, public_key} = GenServer.call pid, :get_public_key
-{:ok, result} = GenServer.call pid, {:verify_signature, "Hello", signature, public_key, :sha512}
+{:ok, public_key} = GenServer.call :ecc, :get_public_key
+{:ok, result} = GenServer.call :ecc, {:verify_signature, "Hello", signature, public_key, :sha512}
 IO.puts "Hello == Hello? #{result}" # true
 
-{:ok, result} = GenServer.call pid, {:verify_signature, "World", signature, public_key, :sha512}
+{:ok, result} = GenServer.call :ecc, {:verify_signature, "World", signature, public_key, :sha512}
 IO.puts "Hello == World? #{result}" # false
 ```
 
