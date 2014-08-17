@@ -31,7 +31,7 @@ defmodule ElixirEllipticCurve.Mixfile do
      files: ["lib", "mix.exs", "README*", "LICENSE*", "ec_*_key.pem"],
      contributors: ["Marius Melzer"],
      licenses: ["MIT"],
-     links: %{"GitHub" => "https://github.com/farao/elixir-elliptic-curve"}
+     links: %{"GitHub" => "https://github.com/farao/elixir-ecc"}
    ]
   end
 end
