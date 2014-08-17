@@ -1,7 +1,11 @@
 defmodule ECC do
   use GenServer
 
-  def init([pem]) do
+  def start_link(pem) do
+    GenServer.start_link(__MODULE__, pem)
+  end
+
+  def init(pem) do
     {:ok, %{
         public: ECC.Crypto.parse_public_key(pem),
         private: ECC.Crypto.parse_private_key(pem)
