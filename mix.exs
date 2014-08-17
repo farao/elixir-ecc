@@ -28,7 +28,7 @@ defmodule ElixirEllipticCurve.Mixfile do
 
   defp package do
     [
-     files: ["lib", "mix.exs", "README*", "LICENSE*", "ec_*_key.pem"],
+     files: ["lib", "mix.exs", "README*", "LICENSE*", "ec_*_key.pem", "test"],
      contributors: ["Marius Melzer"],
      licenses: ["MIT"],
      links: %{"GitHub" => "https://github.com/farao/elixir-ecc"}
