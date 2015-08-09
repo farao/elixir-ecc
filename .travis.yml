@@ -9,7 +9,4 @@ elixir:
 otp_release:
   - 17.0
   - 17.1
-install: 
-  - mix local.hex --force
-  - yes y | mix deps.get
-script: mix test --no-start
+script: yes y | mix test --no-start
