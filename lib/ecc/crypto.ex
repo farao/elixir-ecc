@@ -5,12 +5,12 @@ defmodule ECC.Crypto do
 
       ec_params =
         pem_keys
-        |> Enum.find(&(elem(&1, 0) == :EcpkParameters))
+        |> find_entry(:EcpkParameters)
         |> :public_key.pem_entry_decode()
 
       pem_public =
         pem_keys
-        |> Enum.find(&(elem(&1, 0) == :SubjectPublicKeyInfo))
+        |> find_entry(:SubjectPublicKeyInfo)
         |> elem(1)
 
       ec_point =
@@ -29,7 +29,7 @@ defmodule ECC.Crypto do
     try do
       pem
       |> :public_key.pem_decode()
-      |> Enum.find(&(elem(&1, 0) == :ECPrivateKey))
+      |> find_entry(:ECPrivateKey)
       |> :public_key.pem_entry_decode()
     rescue
       _ -> nil
@@ -50,5 +50,9 @@ defmodule ECC.Crypto do
     rescue
       _ -> nil
     end
+  end
+
+  defp find_entry(list, key) do
+    Enum.find(list, &(elem(&1, 0) == key))
   end
 end
