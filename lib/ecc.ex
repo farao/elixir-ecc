@@ -1,7 +1,7 @@
 defmodule ECC do
   use GenServer
 
-  def start(pem, register_name\\nil) do
+  def start(pem, register_name \\ nil) do
     if register_name do
       GenServer.start(__MODULE__, pem, name: register_name)
     else
@@ -9,7 +9,7 @@ defmodule ECC do
     end
   end
 
-  def start_link(pem, register_name\\nil) do
+  def start_link(pem, register_name \\ nil) do
     if register_name do
       GenServer.start_link(__MODULE__, pem, name: register_name)
     else
@@ -18,10 +18,11 @@ defmodule ECC do
   end
 
   def init(pem) do
-    {:ok, %{
-        public: ECC.Crypto.parse_public_key(pem),
-        private: ECC.Crypto.parse_private_key(pem)
-    }}
+    {:ok,
+     %{
+       public: ECC.Crypto.parse_public_key(pem),
+       private: ECC.Crypto.parse_private_key(pem)
+     }}
   end
 
   def handle_call(:get_public_key, _from, keys) do
@@ -48,28 +49,33 @@ defmodule ECC.Crypto do
       pem_keys = :public_key.pem_decode(pem)
 
       ec_params =
-        Enum.find(pem_keys, fn(k) -> elem(k,0) == :OTPEcpkParameters end)
-        |> put_elem(0, :EcpkParameters)
-        |> :public_key.pem_entry_decode
+        pem_keys
+        |> Enum.find(&(elem(&1, 0) == :EcpkParameters))
+        |> :public_key.pem_entry_decode()
 
       pem_public =
-        Enum.find(pem_keys, fn(k) -> elem(k,0) == :SubjectPublicKeyInfo end)
+        pem_keys
+        |> Enum.find(&(elem(&1, 0) == :SubjectPublicKeyInfo))
         |> elem(1)
-      ec_point = :public_key.der_decode(:SubjectPublicKeyInfo, pem_public)
+
+      ec_point =
+        :SubjectPublicKeyInfo
+        |> :public_key.der_decode(pem_public)
         |> elem(2)
-        |> elem(1)
 
       {{:ECPoint, ec_point}, ec_params}
     rescue
-      _ -> nil
+      _ ->
+        nil
     end
   end
 
   def parse_private_key(pem) do
     try do
-      :public_key.pem_decode(pem)
-      |> Enum.find(fn(k) -> elem(k,0) == :ECPrivateKey end)
-      |> :public_key.pem_entry_decode
+      pem
+      |> :public_key.pem_decode()
+      |> Enum.find(&(elem(&1, 0) == :ECPrivateKey))
+      |> :public_key.pem_entry_decode()
     rescue
       _ -> nil
     end
@@ -77,7 +83,7 @@ defmodule ECC.Crypto do
 
   def sign(msg, hash_type, private_key) do
     try do
-      :public_key.sign msg, hash_type, private_key
+      :public_key.sign(msg, hash_type, private_key)
     rescue
       _ -> nil
     end
