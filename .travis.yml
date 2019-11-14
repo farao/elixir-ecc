@@ -1,14 +1,12 @@
 sudo: false
 language: elixir
 elixir:
-  - 0.14.1
-  - 0.14.2
-  - 0.14.3
-  - 0.15.0
-  - 0.15.1
+  - 1.7
+  - 1.8
+  - 1.9
 otp_release:
-  - 17.0
-  - 17.1
+  - 22.0
+  - 22.1.7
 install:
   - mix local.hex --force
   - yes y | mix deps.get

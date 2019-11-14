@@ -5,7 +5,7 @@ defmodule ElixirEllipticCurve.Mixfile do
     [
       app: :ecc,
       version: "0.1.3",
-      elixir: "~> 1.0",
+      elixir: ">=1.7.0",
       description: description(),
       package: package(),
       deps: deps()
