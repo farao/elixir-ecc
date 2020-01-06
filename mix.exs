@@ -2,12 +2,14 @@ defmodule ElixirEllipticCurve.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :ecc,
-     version: "0.1.3",
-     elixir: "~> 0.14",
-     description: description,
-     package: package,
-     deps: deps]
+    [
+      app: :ecc,
+      version: "0.1.3",
+      elixir: ">=1.6.0",
+      description: description(),
+      package: package(),
+      deps: deps()
+    ]
   end
 
   def application do
@@ -28,10 +30,10 @@ defmodule ElixirEllipticCurve.Mixfile do
 
   defp package do
     [
-     files: ["lib", "mix.exs", "README*", "LICENSE*", "ec_*_key.pem", "test"],
-     contributors: ["Marius Melzer"],
-     licenses: ["MIT"],
-     links: %{"GitHub" => "https://github.com/farao/elixir-ecc"}
-   ]
+      files: ["lib", "mix.exs", "README*", "LICENSE*", "ec_*_key.pem", "test"],
+      contributors: ["Marius Melzer"],
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/farao/elixir-ecc"}
+    ]
   end
 end
