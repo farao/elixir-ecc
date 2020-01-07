@@ -6,11 +6,11 @@ defmodule ECC.LibTest do
     pem_private = File.read!("ec_private_key.pem")
     pem = Enum.join([pem_public, pem_private])
 
-    public_key = ECC.Crypto.parse_public_key(pem)
-    private_key = ECC.Crypto.parse_private_key(pem)
+    {:ok, public_key} = ECC.Crypto.parse_public_key(pem)
+    {:ok, private_key} = ECC.Crypto.parse_private_key(pem)
 
-    signature = ECC.Crypto.sign("Hello", :sha512, private_key)
-    assert ECC.Crypto.verify_signature("Hello", signature, :sha512, public_key)
-    assert not ECC.Crypto.verify_signature("World", signature, :sha512, public_key)
+    {:ok, signature} = ECC.Crypto.sign("Hello", :sha512, private_key)
+    assert {:ok, true} == ECC.Crypto.verify_signature("Hello", signature, :sha512, public_key)
+    assert {:ok, false} == ECC.Crypto.verify_signature("World", signature, :sha512, public_key)
   end
 end

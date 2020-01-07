@@ -9,7 +9,7 @@ defmodule ECC.ServerTest do
     {:ok, _} = ECC.start_link(pem, :ecc)
     {:ok, signature} = GenServer.call(:ecc, {:sign, "Hello", :sha512})
 
-    {:ok, public_key} = GenServer.call(:ecc, :get_public_key)
+    public_key = GenServer.call(:ecc, :get_public_key)
 
     {:ok, result} =
       GenServer.call(:ecc, {:verify_signature, "Hello", signature, public_key, :sha512})

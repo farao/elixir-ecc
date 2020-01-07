@@ -27,7 +27,7 @@ pem = Enum.join([pem_public, pem_private])
 {:ok, _} = ECC.start_link(pem, :ecc)
 {:ok, signature} = GenServer.call(:ecc, {:sign, "Hello", :sha512})
 
-{:ok, public_key} = GenServer.call(:ecc, :get_public_key)
+public_key = GenServer.call(:ecc, :get_public_key)
 {:ok, result} = GenServer.call(:ecc, {:verify_signature, "Hello", signature, public_key, :sha512})
 IO.puts("Hello == Hello? #{result}") # true
 
@@ -44,13 +44,13 @@ pem_public = File.read!("ec_public_key.pem")
 pem_private = File.read!("ec_private_key.pem")
 pem = Enum.join([pem_public, pem_private])
 
-public_key = ECC.Crypto.parse_public_key(pem)
-private_key = ECC.Crypto.parse_private_key(pem)
+{:ok, public_key} = ECC.Crypto.parse_public_key(pem)
+{:ok, private_key} = ECC.Crypto.parse_private_key(pem)
 
-signature = ECC.Crypto.sign("Hello", :sha512, private_key)
-result = ECC.Crypto.verify_signature("Hello", signature, :sha512, public_key)
+{:ok, signature} = ECC.Crypto.sign("Hello", :sha512, private_key)
+{:ok, result} = ECC.Crypto.verify_signature("Hello", signature, :sha512, public_key)
 IO.puts("Hello == Hello? #{result}") # true
 
-result = ECC.Crypto.verify_signature("World", signature, :sha512, public_key)
+{:ok, result} = ECC.Crypto.verify_signature("World", signature, :sha512, public_key)
 IO.puts("Hello == World? #{result}") # false
 ```

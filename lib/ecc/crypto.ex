@@ -4,51 +4,49 @@ defmodule ECC.Crypto do
       pem_keys = :public_key.pem_decode(pem)
 
       ec_params =
-        pem_keys
-        |> find_entry(:EcpkParameters)
+        find_entry(pem_keys, :EcpkParameters)
         |> :public_key.pem_entry_decode()
 
-      pem_public =
-        pem_keys
-        |> find_entry(:SubjectPublicKeyInfo)
-        |> elem(1)
+      {:SubjectPublicKeyInfo, pem_public, _} =
+        find_entry(pem_keys, :SubjectPublicKeyInfo)
 
-      ec_point =
-        :SubjectPublicKeyInfo
-        |> :public_key.der_decode(pem_public)
-        |> elem(2)
+      {:SubjectPublicKeyInfo, _, ec_point} =
+        :public_key.der_decode(:SubjectPublicKeyInfo, pem_public)
 
-      {{:ECPoint, ec_point}, ec_params}
+      public_key = {{:ECPoint, ec_point}, ec_params}
+      {:ok, public_key}
     rescue
-      _ ->
-        nil
+      e -> {:error, "Could not find or parse public key: #{e}"}
     end
   end
 
   def parse_private_key(pem) do
     try do
-      pem
-      |> :public_key.pem_decode()
-      |> find_entry(:ECPrivateKey)
-      |> :public_key.pem_entry_decode()
+      private_key =
+        pem
+        |> :public_key.pem_decode()
+        |> find_entry(:ECPrivateKey)
+        |> :public_key.pem_entry_decode()
+
+      {:ok, private_key}
     rescue
-      _ -> nil
+      e -> {:error, "Could not find or parse private key: #{e}"}
     end
   end
 
   def sign(msg, hash_type, private_key) do
     try do
-      :public_key.sign(msg, hash_type, private_key)
+      {:ok, :public_key.sign(msg, hash_type, private_key)}
     rescue
-      _ -> nil
+      e -> {:error, "Could not sign message: #{e}"}
     end
   end
 
   def verify_signature(msg, signature, hash_type, public_key) do
     try do
-      :public_key.verify(msg, hash_type, signature, public_key)
+      {:ok, :public_key.verify(msg, hash_type, signature, public_key)}
     rescue
-      _ -> nil
+      e -> {:error, "Could not verify signature: #{e}"}
     end
   end
 
