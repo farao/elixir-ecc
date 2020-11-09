@@ -2,8 +2,8 @@ defmodule ECC.ServerTest do
   use ExUnit.Case
 
   test "signing/checking signatures" do
-    pem_public = File.read!("ec_public_key.pem")
-    pem_private = File.read!("ec_private_key.pem")
+    pem_public = File.read!("test/ec_public_key.pem")
+    pem_private = File.read!("test/ec_private_key.pem")
     pem = Enum.join([pem_public, pem_private])
 
     {:ok, _} = ECC.start_link(pem, :ecc)
