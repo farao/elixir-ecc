@@ -13,7 +13,7 @@ defmodule ElixirEllipticCurve.Mixfile do
   end
 
   def application do
-    []
+    [extra_applications: [:public_key]]
   end
 
   defp deps do
