@@ -7,8 +7,7 @@ defmodule ECC.Crypto do
         find_entry(pem_keys, :EcpkParameters)
         |> :public_key.pem_entry_decode()
 
-      {:SubjectPublicKeyInfo, pem_public, _} =
-        find_entry(pem_keys, :SubjectPublicKeyInfo)
+      {:SubjectPublicKeyInfo, pem_public, _} = find_entry(pem_keys, :SubjectPublicKeyInfo)
 
       {:SubjectPublicKeyInfo, _, ec_point} =
         :public_key.der_decode(:SubjectPublicKeyInfo, pem_public)
